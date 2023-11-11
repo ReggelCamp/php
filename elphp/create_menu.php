@@ -12,6 +12,7 @@
     <!-- for sweetalaert -->
     <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
     <style>
@@ -34,21 +35,24 @@
         <br></br>
         <div class="mb-3 mx-5">
             <label for="MenuName" class="form-label">Menu Name</label>
-            <input type="text" class="form-control" id="MenuName" name = "Menuname">     
+            <input type="text" class="form-control" id="MenuName" name = "Menuname" required>     
         </div>
         <div class="mb-3 mx-5">
             <label for="MenuDescription" class="form-label">Menu Description</label>
-            <input type="text" class="form-control" id="MenuDescription" name = "MenuDesc">
+            <input type="text" class="form-control" id="MenuDescription" name = "MenuDesc" required>
         </div>
 
         <div class="mb-3 mx-5">
             <label for="Price" class="form-label">Item Price</label>
-            <input type="text" class="form-control" id="Price" name = "ItemPrice">
+            <input type="text" class="form-control" id="Price" name = "ItemPrice" required>
         </div>
     
         <button type="submit" class="btn btn-primary mx-5" name = "submit" value = "submit">Submit</button>
+    </form>
+    <br>
+    <form>
         <button type="submit" class="btn btn-primary mx-5" formaction = "view_menu.php" name = "view" value = "view">view</button>
-        <button type="submit" class="btn btn-primary mx-5" formaction = "edit_delete_menu.php" name = "view" value = "view">view</button>
+        <button type="submit" class="btn btn-primary mx-5" formaction = "edit_delete_menu.php" name = "view" value = "view">Update/Delete</button>
 
 </form>
     <?php
@@ -56,7 +60,10 @@
     include "dbcon.php";
     
     if (isset($_POST['submit'])) {
+
+       
         $Mname = $_POST["Menuname"];
+        
         $Mdesc = $_POST["MenuDesc"];
         $Price = $_POST["ItemPrice"];
 
@@ -74,6 +81,14 @@
             //echo $message;
            // header("location:create_menu.php");
             //die();
+
+            echo "<script>
+            swal({
+                icon: 'success',
+                title: 'Success',
+                text: 'Menu item created!',
+              });
+              </script>";
         }
         catch(Exception $e)
     {
