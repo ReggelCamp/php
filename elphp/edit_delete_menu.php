@@ -1,5 +1,5 @@
 <?php
-
+//to display
     include "dbcon.php";
 
     try{
@@ -13,13 +13,13 @@
 		//return $rows;
 
         //echo "yey";
+
     }
 
 catch(Exception $e)
     {
         echo "Connection Error: ", $e->getMessage();
     }
-
 
 ?>
 <html>
@@ -35,8 +35,8 @@ catch(Exception $e)
         </style>
     </head>
     <body>
-
-        <h1 class = "hdr">Menu List</h1>
+       
+    <h1 class = "hdr">Menu List</h1>
         <table class="table">
             <thead>
                 <tr>
@@ -67,7 +67,7 @@ catch(Exception $e)
                                 </form>
                                 <form method="post" style="display: inline;">
                                     <input type="hidden" name="delete" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete record?')">DELETE</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
 				            </td>
                             <?php echo "</tr>";
@@ -78,21 +78,75 @@ catch(Exception $e)
              
             </tbody>
         </table>
-
-    </body>
+        <form>
+            <button type="submit" class="btn btn-primary mx-5" formaction = "create_menu.php" name = "view" value = "view">Create Menu</button>
+        </form>
+        </body>
 </html>
 
-<?php
 
-  //  include "dbconn.php";
+<?php
+//for delete
+    include "dbcon.php";
+    $id = null;
 
     if (isset($_POST['delete'])) {
+       
+        $id = trim($_POST['delete']);
+//            $id = ($_POST['delete']);
 
-        $query = "DELETE FROM ref_menu WHERE id=?";
-		$st = $conn->prepare($query);
-		$st->execute([$id]);
-		$conn = null;
 
+
+        try{
+            $query = "DELETE FROM ref_menu WHERE id=?";
+            $st = $conn->prepare($query);
+            $st->execute([$id]);
+          
+            $conn = null;
+
+            echo "<script>
+            swal({
+                icon: 'success',
+                title: 'Success',
+                text: 'Menu item created!',
+              });
+              </script>";
+          
+        }
+
+        catch(Exception $e)
+    {
+        echo "Connection Error: ", $e->getMessage();
+    }
     }
 
+?>
+
+<?php
+    
+    include 'dbcon.php';
+  //  include 'create_menu.php'; 
+
+    if(isset($_POST['edit'])){
+
+       // header ("Location: create_menu.php");
+
+
+        $Mname = trim($_POST["menu_name"]);  
+        $Mdesc = trim($_POST["menu_desc"]);
+        $Price = trim($_POST["price"]);
+
+
+        try{
+            $query = "Update ref_menu set menu_name=?,menu_desc=?,price=? where id=?";
+            $st = $conn->prepare($query);
+            $st->execute(array($Mname,$Mdesc,$Price));
+            $db = null;
+           // header ("Location: create_menu.php");
+        }
+        catch(Exception $e)
+        {
+            echo "Connection Error: ", $e->getMessage();
+        }
+    }
 ?>
